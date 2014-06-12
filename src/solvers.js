@@ -27,7 +27,6 @@ window.findNRooksSolution = function(n) {
     solution[i][i] = 1;
   }
 
-  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
   return solution;
 };
 
@@ -35,7 +34,55 @@ window.findNRooksSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+  var solutionCount = 0;
+
+
+  var generator = function (numSpaces, playsMade, matrix){
+    // break recursion under 2 criteria
+    // if (n===2) {debugger;};
+
+    if(numSpaces + 1 < (n - playsMade)){
+      return;
+    }
+
+
+    if (numSpaces < 0 || playsMade === n) {
+      if ( playsMade === n ) {
+        var board = new Board(matrix);
+        if (!board.hasAnyRooksConflicts()) {
+          debugger;
+          solutionCount++;
+        }
+      }
+      return;
+    }
+
+
+    if (numSpaces < 0) {
+      return;
+    }
+
+    numSpaces--;
+    generator(numSpaces, playsMade, matrix);
+    numSpaces++;
+
+    matrix[(numSpaces - (numSpaces % n))/n][numSpaces % n] = 1;
+
+    numSpaces--;
+    generator(numSpaces, playsMade+1, matrix);
+    numSpaces++;
+
+    matrix[(numSpaces - (numSpaces % n))/n][numSpaces % n] = 0;
+
+  };
+
+
+  var empty = makeEmptyMatrix(n);
+
+  // if (n === 1) {
+  //   return 1;
+  // }
+  generator((n*n)-1, 0, empty);
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
