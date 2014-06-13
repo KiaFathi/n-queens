@@ -134,7 +134,6 @@ window.countNQueensSolutions = function(n) {
     for (var i = 0; i < n; i ++) {
       if (!colC[i] && !maDC[i - row] && !miDC[row + i]) {
         if (row + 1 === n) {
-          // debugger;
           solutionCount ++;
           return;
         }
@@ -148,12 +147,9 @@ window.countNQueensSolutions = function(n) {
       }
     }
   };
-
   nQ();
 
 
-
-  console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
 };
 
